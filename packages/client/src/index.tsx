@@ -1,8 +1,8 @@
 import ReactDOM from "react-dom/client";
 import { mount as mountDevTools } from "@latticexyz/dev-tools";
-import { App } from "./App";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
+import { Routes } from "@generouted/react-router";
 import "./index.css";
 
 const rootElement = document.getElementById("react-root");
@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(rootElement);
 setup().then((result) => {
   root.render(
     <MUDProvider value={result}>
-      <App />
+      <Routes />
     </MUDProvider>
   );
   mountDevTools();
