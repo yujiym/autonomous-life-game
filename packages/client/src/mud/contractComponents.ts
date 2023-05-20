@@ -20,5 +20,22 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    MapConfig: (() => {
+      const tableId = new TableId("", "MapConfig");
+      return defineComponent(
+        world,
+        {
+          width: RecsType.Number,
+          height: RecsType.Number,
+          cell: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }
