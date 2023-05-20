@@ -38,7 +38,8 @@ contract MapSystem is System {
     for (uint32 y = 0; y < height; y++) {
       for (uint32 x = 0; x < width; x++) {
         // count neighbours
-        uint numLiveNeighbours = 0;
+        uint8 numLiveNeighbours = 0;
+        uint8[] memory neighbourIds = new uint8[](3);
         for (int32 j = -1; j <= 1; j++) {
           int32 yy = int32(y) + j;
           if (yy >= int32(height) || yy < 0) continue; //out of map
@@ -46,23 +47,36 @@ contract MapSystem is System {
             if (i == 0 && j == 0) continue; //center cell is self
             int32 xx = int32(x) + i;
             if (xx >= int32(width) || xx < 0) continue; //out of map
-            uint8 neighbourValue = uint8(cell[(uint32(yy) * width) + uint32(xx)]);
-            if (neighbourValue == 0) continue;
-            //TODO memory cellValue to calculate Dominant Neighbor
+            uint8 neighbourId = uint8(cell[(uint32(yy) * width) + uint32(xx)]);
+            if (neighbourId == 0) continue;
+            //memory ids to judge dominant player ids when bornning
+            //born is max 3 neighbours, so 3 is enough
+            if (numLiveNeighbours < 3) {
+              neighbourIds[numLiveNeighbours] = neighbourId;
+            }
             numLiveNeighbours++;
           }
         }
-        // console2.log(numLiveNeighbours);
+
         uint8 cellValue = uint8(cell[(uint32(y) * width) + uint32(x)]);
-        //born
         if (cellValue == 0) {
+          //born
           if (numLiveNeighbours == 3) {
-            newCell[(y * width) + x] = bytes1(uint8(1));
+            //born with dominant player id
+            uint8 dominantId;
+            if (neighbourIds[0] == neighbourIds[1] || neighbourIds[0] == neighbourIds[2]) {
+              dominantId = neighbourIds[0];
+            } else if (neighbourIds[1] == neighbourIds[2]) {
+              dominantId = neighbourIds[1];
+            } else {
+              dominantId = neighbourIds[0];
+            }
+            newCell[(y * width) + x] = bytes1(dominantId);
           }
         } else {
+          //live
           if (numLiveNeighbours == 2 || numLiveNeighbours == 3) {
-            //live
-            newCell[(y * width) + x] = bytes1(uint8(1));
+            newCell[(y * width) + x] = bytes1(uint8(cellValue));
           }
         }
       }
