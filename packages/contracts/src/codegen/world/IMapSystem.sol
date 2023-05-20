@@ -5,4 +5,6 @@ pragma solidity >=0.8.0;
 
 interface IMapSystem {
   function add(uint32 _x, uint32 _y, uint8 _id) external;
+
+  function calculate() external;
 }
