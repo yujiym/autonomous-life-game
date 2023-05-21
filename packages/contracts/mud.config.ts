@@ -15,5 +15,20 @@ export default mudConfig({
         cell: "bytes",
       },
     },
+    MaxPlayerId: {
+      keySchema: {},
+      schema: "uint8",
+    },
+    Players: {
+      dataStruct: true,
+      schema: {
+        user: "address",
+        cellPower: "uint8",
+      },
+    },
+    CalculatedCount: {
+      keySchema: {},
+      schema: "uint256",
+    },
   },
 });

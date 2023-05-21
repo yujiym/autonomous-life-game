@@ -37,5 +37,51 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    MaxPlayerId: (() => {
+      const tableId = new TableId("", "MaxPlayerId");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Players: (() => {
+      const tableId = new TableId("", "Players");
+      return defineComponent(
+        world,
+        {
+          user: RecsType.String,
+          cellPower: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    CalculatedCount: (() => {
+      const tableId = new TableId("", "CalculatedCount");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }
