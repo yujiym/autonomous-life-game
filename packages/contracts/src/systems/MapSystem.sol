@@ -1,13 +1,30 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 import {System} from "@latticexyz/world/src/System.sol";
-import {MapConfig} from "../codegen/Tables.sol";
+import {MapConfig, CalculatedCount, Players, MaxPlayerId} from "../codegen/Tables.sol";
 
 contract MapSystem is System {
+  uint8 constant CELL_POWER_INTERVAL = 8;
+  uint8 constant INIT_CELL_POWER = 12;
+
   function calculate() public {
+    //caluculate next map
     (uint32 width, uint32 height, bytes memory cell) = MapConfig.get();
     bytes memory newCell = _calculate(width, height, cell);
     MapConfig.setCell(newCell);
+
+    //increase cell power
+    uint256 _nextCount = CalculatedCount.get() + 1;
+    CalculatedCount.set(_nextCount);
+    if (_nextCount % CELL_POWER_INTERVAL == 0) {
+      uint8 _maxPlayerId = MaxPlayerId.get();
+      for (uint8 i = 1; i <= _maxPlayerId; i++) {
+        uint8 _cellPower = Players.get(bytes32(uint256(i))).cellPower;
+        if (_cellPower < INIT_CELL_POWER) {
+          Players.setCellPower(bytes32(uint256(i)), _cellPower + 1);
+        }
+      }
+    }
   }
 
   function _calculate(uint32 width, uint32 height, bytes memory cell) internal view returns (bytes memory newCell) {

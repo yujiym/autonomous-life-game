@@ -7,3 +7,4 @@ import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { MapConfig, MapConfigTableId } from "./tables/MapConfig.sol";
 import { MaxPlayerId, MaxPlayerIdTableId } from "./tables/MaxPlayerId.sol";
 import { Players, PlayersData, PlayersTableId } from "./tables/Players.sol";
+import { CalculatedCount, CalculatedCountTableId } from "./tables/CalculatedCount.sol";

@@ -68,5 +68,20 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    CalculatedCount: (() => {
+      const tableId = new TableId("", "CalculatedCount");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }

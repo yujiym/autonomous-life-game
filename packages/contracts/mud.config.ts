@@ -26,5 +26,9 @@ export default mudConfig({
         cellPower: "uint8",
       },
     },
+    CalculatedCount: {
+      keySchema: {},
+      schema: "uint256",
+    },
   },
 });
