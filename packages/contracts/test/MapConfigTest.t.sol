@@ -5,7 +5,7 @@ import "forge-std/Test.sol";
 import {MudV2Test} from "@latticexyz/std-contracts/src/test/MudV2Test.t.sol";
 
 import {IWorld} from "../src/codegen/world/IWorld.sol";
-import {MapConfig, MapConfigTableId} from "../src/codegen/Tables.sol";
+import {MapConfig, MapConfigTableId, Players} from "../src/codegen/Tables.sol";
 import {Strings} from "@openzeppelin/contracts/utils/Strings.sol";
 
 contract MapConfigTest is MudV2Test {
@@ -55,6 +55,21 @@ contract MapConfigTest is MudV2Test {
     world.calculate();
     (width, height, cell) = MapConfig.get(world);
     _consoleCell(width, height, cell);
+  }
+
+  function test_add() public {
+    world.join(address(this));
+
+    uint32 width;
+    uint32 height;
+    bytes memory cell;
+    (width, height, cell) = MapConfig.get(world);
+    _consoleCell(width, height, cell);
+    world.add(0, 9, 1);
+    (width, height, cell) = MapConfig.get(world);
+    _consoleCell(width, height, cell);
+    assertEq(Players.get(world, bytes32(uint256(1))).cellPower, 11);
+    assertEq(uint8(cell[(9 * width) + 0]), 1);
   }
 
   function _consoleCell(uint32 width, uint32 height, bytes memory cell) private view {
