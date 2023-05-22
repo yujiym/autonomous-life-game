@@ -58,7 +58,7 @@ contract MapConfigTest is MudV2Test {
   }
 
   function test_add() public {
-    world.join(address(this));
+    world.join();
 
     uint32 width;
     uint32 height;
@@ -73,8 +73,8 @@ contract MapConfigTest is MudV2Test {
   }
 
   function test_cellPower() public {
-    world.join(address(this));
-    world.join(address(2));
+    world.join();
+    world.join();
 
     world.add(0, 9, 1);
     world.add(1, 9, 2);

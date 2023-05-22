@@ -16,7 +16,7 @@ contract ClearTest is MudV2Test {
   }
 
   function test_clear() public {
-    world.join(address(this));
+    world.join();
     world.add(0, 9, 1);
 
     //clear
