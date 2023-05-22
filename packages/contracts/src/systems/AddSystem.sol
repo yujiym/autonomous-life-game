@@ -7,9 +7,9 @@ contract AddSystem is System {
   // add this method
   function add(uint32 _x, uint32 _y, uint8 _id) public {
     //reduce cell power
-    uint8 _cellPower = Players.get(bytes32(uint256(_id))).cellPower;
+    uint8 _cellPower = Players.get(_id).cellPower;
     if (_cellPower == 0) revert("Cell power is 0");
-    Players.setCellPower(bytes32(uint256(_id)), _cellPower - 1);
+    Players.setCellPower(_id, _cellPower - 1);
 
     // map
     (uint32 width, uint32 height, bytes memory cell) = MapConfig.get();

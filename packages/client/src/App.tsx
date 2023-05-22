@@ -22,7 +22,7 @@ export const App = () => {
       <header className="z-50 text-center">
         <h1 className="font-dot text-5xl p-4">Autonomous Life Game</h1>
       </header>
-      <div className=" bg-red-500 text-sky-600">
+      {/* <div className=" bg-red-500 text-sky-600">
         Counter: <span>{counter?.value ?? "??"}</span>
       </div>
       <button
@@ -33,7 +33,7 @@ export const App = () => {
         }}
       >
         Increment
-      </button>
+      </button> */}
       {loadingState.state !== SyncState.LIVE ? (
         <div>
           {loadingState.msg} ({Math.floor(loadingState.percentage)}%)
@@ -42,9 +42,9 @@ export const App = () => {
         <GameBoard />
       )}
 
-      <footer className="z-50 text-center py-2 text-sm">
+      {/* <footer className="z-50 text-center py-2 text-sm">
         &copy; Komorebi88, yamapyblack, yujiym
-      </footer>
+      </footer> */}
     </div>
   );
 };

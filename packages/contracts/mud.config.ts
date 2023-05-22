@@ -25,6 +25,9 @@ export default mudConfig({
         user: "address",
         cellPower: "uint8",
       },
+      keySchema: {
+        playerId: "uint8",
+      },
     },
     CalculatedCount: {
       keySchema: {},

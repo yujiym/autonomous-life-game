@@ -5,4 +5,6 @@ pragma solidity >=0.8.0;
 
 interface IJoinSystem {
   function join() external returns (uint8 playerId_);
+
+  function getCellPower(uint8 playerId_) external view returns (uint8 cellPower_);
 }

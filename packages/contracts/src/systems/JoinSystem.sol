@@ -10,6 +10,10 @@ contract JoinSystem is System {
     uint8 maxPlayerId = MaxPlayerId.get();
     uint8 nextPlayerId = maxPlayerId + 1;
     MaxPlayerId.set(nextPlayerId);
-    Players.set(bytes32(uint256(nextPlayerId)), address(0), INIT_CELL_POWER);
+    Players.set(nextPlayerId, address(0), INIT_CELL_POWER);
+  }
+
+  function getCellPower(uint8 playerId_) public view returns (uint8 cellPower_) {
+    cellPower_ = Players.get(playerId_).cellPower;
   }
 }

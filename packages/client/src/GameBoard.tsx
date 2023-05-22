@@ -1,10 +1,14 @@
-import { useState } from "react";
-import { useComponentValue } from "@latticexyz/react";
+import { useEffect, useState } from "react";
+import { useComponentValue, useRow } from "@latticexyz/react";
 import { useMUD } from "./MUDContext";
 import { hexToArray } from "@latticexyz/utils";
+import { world } from "./mud/world";
 
 export const GameBoard = () => {
   const [userId, setUserId] = useState("");
+  const [cellPower, setCellPower] = useState(12);
+  const [isCalculating, setIsCalculating] = useState(false);
+
   const handleLogin = (e: any) => {
     e.preventDefault();
     const inputUserId = e.target.elements.userId.value;
@@ -14,9 +18,35 @@ export const GameBoard = () => {
 
   const {
     components: { MapConfig, Players },
-    network: { playerEntity, singletonEntity },
-    systemCalls: { add, join },
+    network: { singletonEntity },
+    systemCalls: { add, join, calculate, getCellPower },
   } = useMUD();
+
+  // useEffect(() => {
+  //   //if userId is set, set cellPower
+  //   if (userId) {
+  //     getCellPower(Number(userId)).then((power) => {
+  //       console.log("power", power);
+  //       setCellPower(power!);
+  //     });
+  //   }
+  // }, [userId]);
+
+  useEffect(() => {
+    let calculateInterval: any;
+
+    if (isCalculating) {
+      calculateInterval = setInterval(async () => {
+        await calculate();
+      }, 2000);
+    }
+
+    return () => {
+      if (calculateInterval) {
+        clearInterval(calculateInterval);
+      }
+    };
+  }, [isCalculating]); // isCalculating is a dependency now
 
   //map
   const mapConfig = useComponentValue(MapConfig, singletonEntity);
@@ -34,19 +64,22 @@ export const GameBoard = () => {
       value,
     };
   });
-  const rows = new Array(width).fill(0).map((_, i) => i);
-  const columns = new Array(height).fill(0).map((_, i) => i);
+  const rows = new Array(height).fill(0).map((_, i) => i);
+  const columns = new Array(width).fill(0).map((_, i) => i);
 
   // //stamina
-  // const stamina = useComponentValue(Players, playerEntity)?.cellPower;
+  // const stamina = useComponentValue(
+  //   Players,
+  //   world.registerEntity({ id: userId })
+  // )?.cellPower;
 
   return (
     <>
       {userId ? (
         <>
           <div className="flex justify-center">
-            <div className="">Player Id: {userId}</div>
-            {/* <div className="">Stamina: {stamina}</div> */}
+            <div className="mr-4">Player Id: {userId}</div>
+            <div className="">Stamina: {cellPower}</div>
           </div>
           <div className="flex justify-center">
             <div className="inline-grid relative overflow-hidden w-3/5">
@@ -64,20 +97,51 @@ export const GameBoard = () => {
                         gridRow: y + 1,
                       }}
                       onClick={async (event) => {
+                        if (cellPower > 0) {
+                          setCellPower(cellPower - 1);
+                        }
                         event.preventDefault();
                         await add(x, y, Number(userId));
                       }}
                     >
                       {cell == 0 ? (
-                        <div className="relative h-6 bg-white border-black border-2"></div>
+                        <div className="relative h-4 bg-white border-black border-2"></div>
+                      ) : cell == 1 ? (
+                        <div className="relative h-4 bg-blue-700 border-black border-2"></div>
+                      ) : cell == 2 ? (
+                        <div className="relative h-4 bg-green-700 border-black border-2"></div>
+                      ) : cell == 3 ? (
+                        <div className="relative h-4 bg-yellow-700 border-black border-2"></div>
+                      ) : cell == 4 ? (
+                        <div className="relative h-4 bg-red-700 border-black border-2"></div>
+                      ) : cell == 5 ? (
+                        <div className="relative h-4 bg-purple-700 border-black border-2"></div>
+                      ) : cell == 6 ? (
+                        <div className="relative h-4 bg-pink-700 border-black border-2"></div>
+                      ) : cell == 7 ? (
+                        <div className="relative h-4 bg-light-blue-700 border-black border-2"></div>
+                      ) : cell == 8 ? (
+                        <div className="relative h-4 bg-dark-700 border-black border-2"></div>
                       ) : (
-                        <div className="relative h-6 bg-blue-700 border-black border-2"></div>
+                        <div className="relative h-4 bg-white border-black border-2"></div>
                       )}
                     </div>
                   );
                 })
               )}
             </div>
+          </div>
+          <div className="flex justify-center mt-4">
+            <button
+              type="button"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+              onClick={async (event) => {
+                event.preventDefault();
+                setIsCalculating(!isCalculating);
+              }}
+            >
+              {isCalculating ? "Stop" : "Start"}
+            </button>
           </div>
         </>
       ) : (
