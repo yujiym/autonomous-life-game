@@ -16,7 +16,7 @@ contract ClearTest is MudV2Test {
   }
 
   function test_clear() public {
-    world.join(address(this));
+    world.join();
     world.add(0, 9, 1);
 
     //clear
@@ -25,8 +25,8 @@ contract ClearTest is MudV2Test {
     (uint32 width, uint32 height, bytes memory cell) = MapConfig.get(world);
     assertEq(cell, new bytes(0));
 
-    assertEq(Players.get(world, bytes32(uint256(1))).cellPower, 0);
-    assertEq(Players.get(world, bytes32(uint256(1))).user, address(0));
+    assertEq(Players.get(world, 1).cellPower, 0);
+    assertEq(Players.get(world, 1).user, address(0));
 
     uint8 maxPlayerId = MaxPlayerId.get(world);
     assertEq(maxPlayerId, 0);

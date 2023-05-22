@@ -2,6 +2,10 @@ import { mudConfig } from "@latticexyz/world/register";
 
 export default mudConfig({
   tables: {
+    Counter: {
+      keySchema: {},
+      schema: "uint32",
+    },
     MapConfig: {
       keySchema: {},
       dataStruct: false,
@@ -20,6 +24,9 @@ export default mudConfig({
       schema: {
         user: "address",
         cellPower: "uint8",
+      },
+      keySchema: {
+        playerId: "uint8",
       },
     },
     CalculatedCount: {

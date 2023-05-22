@@ -19,9 +19,9 @@ contract MapSystem is System {
     if (_nextCount % CELL_POWER_INTERVAL == 0) {
       uint8 _maxPlayerId = MaxPlayerId.get();
       for (uint8 i = 1; i <= _maxPlayerId; i++) {
-        uint8 _cellPower = Players.get(bytes32(uint256(i))).cellPower;
+        uint8 _cellPower = Players.get(i).cellPower;
         if (_cellPower < INIT_CELL_POWER) {
-          Players.setCellPower(bytes32(uint256(i)), _cellPower + 1);
+          Players.setCellPower(i, _cellPower + 1);
         }
       }
     }

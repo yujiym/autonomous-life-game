@@ -10,7 +10,7 @@ contract ClearSystem is System {
     //clear players
     uint8 _maxPlayerId = MaxPlayerId.get();
     for (uint8 i = 1; i <= _maxPlayerId; i++) {
-      Players.deleteRecord(bytes32(uint256(i)));
+      Players.deleteRecord(i);
     }
     //clear max player id
     MaxPlayerId.set(0);

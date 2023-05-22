@@ -21,11 +21,11 @@ contract PlayersTest is MudV2Test {
     assertEq(maxPlayerId, 0);
 
     // Expect the counter to be 2 after calling increment.
-    world.join(address(this));
+    world.join();
     maxPlayerId = MaxPlayerId.get(world);
     assertEq(maxPlayerId, 1);
 
     // assertEq(Players.get(world, 1).user, address(0));
-    assertEq(Players.get(world, bytes32(uint256(1))).cellPower, 12);
+    assertEq(Players.get(world, 1).cellPower, 12);
   }
 }
